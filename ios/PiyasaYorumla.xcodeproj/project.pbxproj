@@ -12,6 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9148370D2ABDA18A0049299A /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9148370C2ABDA18A0049299A /* AppCenter-Config.plist */; };
 		916A1C432ABAF99100837DB0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 916A1C422ABAF99100837DB0 /* GoogleService-Info.plist */; };
 		ADB9FEF09037DA6C8BDD7D4F /* libPods-PiyasaYorumla-PiyasaYorumlaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA392A670A177E77A8D909B /* libPods-PiyasaYorumla-PiyasaYorumlaTests.a */; };
 		CE0C946554336F906DDA7F75 /* libPods-PiyasaYorumla.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8CB96710C9DA55185775646 /* libPods-PiyasaYorumla.a */; };
@@ -40,6 +41,7 @@
 		27A657A1FA59CC42A069C04F /* Pods-PiyasaYorumla-PiyasaYorumlaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiyasaYorumla-PiyasaYorumlaTests.release.xcconfig"; path = "Target Support Files/Pods-PiyasaYorumla-PiyasaYorumlaTests/Pods-PiyasaYorumla-PiyasaYorumlaTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PiyasaYorumla/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B88E4A8A2E76E81CBA0447A /* Pods-PiyasaYorumla.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiyasaYorumla.release.xcconfig"; path = "Target Support Files/Pods-PiyasaYorumla/Pods-PiyasaYorumla.release.xcconfig"; sourceTree = "<group>"; };
+		9148370C2ABDA18A0049299A /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
 		916A1C422ABAF99100837DB0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AEA392A670A177E77A8D909B /* libPods-PiyasaYorumla-PiyasaYorumlaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PiyasaYorumla-PiyasaYorumlaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1E57AF6B662FB2E5B283D1B /* Pods-PiyasaYorumla.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiyasaYorumla.debug.xcconfig"; path = "Target Support Files/Pods-PiyasaYorumla/Pods-PiyasaYorumla.debug.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 		13B07FAE1A68108700A75B9A /* PiyasaYorumla */ = {
 			isa = PBXGroup;
 			children = (
+				9148370C2ABDA18A0049299A /* AppCenter-Config.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -247,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				9148370D2ABDA18A0049299A /* AppCenter-Config.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				916A1C432ABAF99100837DB0 /* GoogleService-Info.plist in Resources */,
 			);
