@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "794453570011",
+    "firebase_url": "https://piyasayorumla-4fed7-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "piyasayorumla-4fed7",
+    "storage_bucket": "piyasayorumla-4fed7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794453570011:android:06bfd577d256c7d1ee37fe",
+        "android_client_info": {
+          "package_name": "com.piyasayorumla"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794453570011-vjpjl5hqhbatntshlmlmvocq9mn82hcj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyRPIx76tKUv17mIbRrz5cQgygiLjfGcE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794453570011-vjpjl5hqhbatntshlmlmvocq9mn82hcj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
