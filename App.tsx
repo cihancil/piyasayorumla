@@ -1,63 +1,72 @@
-import React from 'react'
-import {
-  View,
-  Text,
-} from 'react-native'
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React, { useEffect } from 'react'
+import { SafeAreaView, StyleSheet, StatusBar } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
+import HomePage from '@src/pages/HomePage'
+import FollowListPage from '@src/pages/FollowListPage'
+import MenuPage from '@src/pages/MenuPage'
 
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+import Colors from '@src/utils/colors'
+import Configs from '@src/utils/configs'
+import TabBarIcon from '@src/components/TabBarIcon';
+import HomeHeader from '@src/components/HomeHeader';
 
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
 
 function App(): JSX.Element {
   return (
-    <NavigationContainer>
-      {/* <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator> */}
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused
-                ? 'information-circle'
-                : 'information-circle-outline';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'list' : 'list-outline';
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        animated={true}
+        backgroundColor={Colors.darkBackground}
+        barStyle={'light-content'}
+      />
+      <NavigationContainer  >
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarShowLabel: false,
+            tabBarStyle: {
+              borderTopWidth: 0,
+              backgroundColor: Colors.darkBackground,
+              height: Configs.TABBAR_HEIGHT,
+            },
+            tabBarIcon: ({ focused, color, size }) => {
+              return <TabBarIcon route={route} focused={focused} color={color} size={size} />
+            },
+            tabBarActiveTintColor: Colors.lightGray,
+            tabBarInactiveTintColor: Colors.darkGray,
+          })}
+        >
+          <Tab.Screen name="Home" component={HomePage} options={{
+            header: () => <HomeHeader />
+          }} />
+          <Tab.Screen name="FollowList" component={FollowListPage} options={{
+            headerTitle: 'Takip Listem',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              color: Colors.white,
+              fontWeight: 'bold',
+            },
+            headerStyle: {
+              height: Configs.HEADER_HEIGHT,
+              backgroundColor: Colors.darkBackground,
             }
-
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: 'tomato',
-          tabBarInactiveTintColor: 'gray',
-        })}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+          }} />
+          <Tab.Screen name="Menu" component={MenuPage} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
+  )
 }
 
 export default App
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.darkBackground,
+  }
+})
