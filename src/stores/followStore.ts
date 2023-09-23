@@ -9,6 +9,7 @@ type FollowStore = {
   clearFollowedData: () => void,
   addData: (data: ForexData) => void,
   removeData: (data: ForexData) => void,
+  setAllData: (data: ForexData[]) => void,
 }
 
 type ComputedStore = {
@@ -42,6 +43,12 @@ export const useFollowStore = create<FollowStore>()(
           const remaining = [...state.followedData.filter(fd => fd.name != data.name)]
           setFollowedDataStorage(remaining)
           return { followedData: remaining }
+        })
+      },
+      setAllData: (data: ForexData[]) => {
+        set((state) => {
+          setFollowedDataStorage(data)
+          return { followedData: data }
         })
       },
     }), computeState)

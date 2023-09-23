@@ -17,21 +17,17 @@ import colors from '@src/utils/colors'
 
 export default () => {
   const followedData = useFollowStore((state) => state.followedData)
-  const [data, setData] = useState(followedData)
-
   const fetchData = useDataStore((state) => state.fetchData)
   const firebaseUser = useAuthStore((state) => state.firebaseUser)
   const removeData = useFollowStore((state) => state.removeData)
+  const setAllData = useFollowStore((state) => state.setAllData)
+
   const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
     if (firebaseUser)
       fetchData()
   }, [firebaseUser])
-
-  useEffect(() => {
-    setData(followedData)
-  }, [followedData])
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
@@ -69,47 +65,13 @@ export default () => {
   }
   return (
     <DraggableFlatList
-      data={data}
+      data={followedData}
       onDragEnd={({ data }) => {
-        setData(data)
+        setAllData(data)
       }}
       keyExtractor={(item) => item.name}
       renderItem={renderItem}
       containerStyle={{ flex: 1 }}
-      style={styles.container}
-      refreshControl={< RefreshControl
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        colors={[Colors.darkBackground]}
-        tintColor={Colors.white}
-      />}
-      indicatorStyle='white'
-    />
-  )
-
-  // return (
-  //   <SortableList
-  //     data={followedData}
-  //     renderRow={renderRow}
-  //     style={styles.container}
-  //     refreshControl={< RefreshControl
-  //       refreshing={refreshing}
-  //       onRefresh={onRefresh}
-  //       colors={[Colors.darkBackground]}
-  //       tintColor={Colors.white}
-  //     />}
-  //   />
-  // )
-
-  return (
-    <FlatList
-      data={followedData}
-      keyExtractor={item => item.name}
-      renderItem={
-        ({ item }) =>
-          <ForexDataListItem
-            data={item} key={item.name} style={styles.itemContainer} />
-      }
       style={styles.container}
       refreshControl={< RefreshControl
         refreshing={refreshing}
