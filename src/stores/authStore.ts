@@ -12,7 +12,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
   userInfo: null,
   firebaseUser: null,
   anonymousAuthenticate: async () => {
-    console.log('anonymousAuthenticate')
     const fUser = await auth().signInAnonymously()
     auth().onAuthStateChanged((user: any) => {
       set({ firebaseUser: user })

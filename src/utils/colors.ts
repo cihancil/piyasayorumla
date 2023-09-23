@@ -6,4 +6,5 @@ export default {
   lightGray: '#eeeeee',
   mediumGray: '#aaaaaa',
   darkGray: '#666666',
+  darkerGray: '#333333',
 }

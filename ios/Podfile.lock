@@ -1391,6 +1391,8 @@ PODS:
     - Firebase/Installations (= 10.14.0)
     - React-Core
     - RNFBApp
+  - RNFlashList (1.6.1):
+    - React-Core
   - RNScreens (3.25.0):
     - React-Core
     - React-RCTImage
@@ -1482,6 +1484,7 @@ DEPENDENCIES:
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBInAppMessaging (from `../node_modules/@react-native-firebase/in-app-messaging`)"
   - "RNFBInstallations (from `../node_modules/@react-native-firebase/installations`)"
+  - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1633,6 +1636,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/in-app-messaging"
   RNFBInstallations:
     :path: "../node_modules/@react-native-firebase/installations"
+  RNFlashList:
+    :path: "../node_modules/@shopify/flash-list"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   Yoga:
@@ -1729,6 +1734,7 @@ SPEC CHECKSUMS:
   RNFBFirestore: b24cacb31d8aaa9634cb7c06e539d9bf2ac8bdc9
   RNFBInAppMessaging: d3e63564c68d35e75b009f58ae422c9a7bc796a4
   RNFBInstallations: 282c3cc2d67d242e6e5ffaf15780d915eef7c6f0
+  RNFlashList: 236646d48f224a034f35baa0242e1b77db063b1e
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9

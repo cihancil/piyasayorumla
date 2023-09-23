@@ -14,7 +14,6 @@ import Colors from '@src/utils/colors'
 import Configs from '@src/utils/configs'
 import TabBarIcon from '@src/components/TabBarIcon';
 import HomeHeader from '@src/components/HomeHeader';
-import SearchHeader from '@src/components/SearchHeader';
 import { useAuthStore } from '@src/stores/authStore'
 
 const Tab = createBottomTabNavigator()
@@ -64,7 +63,7 @@ function App(): JSX.Element {
         )
       })} />
       <Stack.Screen name="Search" component={SearchPage} options={{
-        headerTitle: () => <SearchHeader />,
+        headerTitle: 'Takip Listeme Ekle',
       }} />
     </Stack.Navigator>
   )
