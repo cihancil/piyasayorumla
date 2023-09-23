@@ -11,16 +11,20 @@ import AppText from '@src/components/AppText'
 import { useDataStore } from '@src/stores/dataStore'
 import { useFollowStore } from '@src/stores/followStore'
 import { useAuthStore } from '@src/stores/authStore'
+import { useUIStore } from '@src/stores/uiStore'
+
 import ForexDataListItem from '@src/components/ForexDataListItem'
 import ForexData from '@src/models/ForexData'
 import colors from '@src/utils/colors'
 
-export default () => {
+export default ({ navigation }: { navigation: any }) => {
   const followedData = useFollowStore((state) => state.followedData)
   const fetchData = useDataStore((state) => state.fetchData)
   const firebaseUser = useAuthStore((state) => state.firebaseUser)
   const removeData = useFollowStore((state) => state.removeData)
   const setAllData = useFollowStore((state) => state.setAllData)
+  const editFollowedListEnabled = useUIStore((state) => state.editFollowedListEnabled)
+  const setEditingFollowedList = useUIStore((state) => state.setEditingFollowedList)
 
   const [refreshing, setRefreshing] = useState(false)
 
@@ -28,6 +32,20 @@ export default () => {
     if (firebaseUser)
       fetchData()
   }, [firebaseUser])
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: editFollowedListEnabled ? () => null : () => (
+        <TouchableOpacity style={{ paddingHorizontal: 8 }}
+          hitSlop={16}
+          onPress={() => {
+            navigation.navigate('Search')
+          }}>
+          <FontAwesome5 name='search-plus' size={20} color={'white'} />
+        </TouchableOpacity>
+      )
+    })
+  }, [navigation, editFollowedListEnabled])
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
@@ -42,45 +60,71 @@ export default () => {
       <ScaleDecorator>
         <TouchableOpacity
           delayLongPress={100}
-          onLongPress={() => {
+          onLongPress={editFollowedListEnabled ? () => {
             ReactNativeHapticFeedback.trigger("impactLight")
             drag()
-          }}
-          style={{ paddingLeft: 20 }}
+          } : undefined}
+          style={{}}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-            <FontAwesome5 size={20} name='bars' color={colors.mediumGray} />
-            <View style={{ width: 8 }} />
+            {editFollowedListEnabled && <FontAwesome5 size={20} name='bars' color={colors.mediumGray} style={{
+              paddingLeft: 20
+            }} />}
+            {editFollowedListEnabled && <View style={{ width: 8 }} />}
             <ForexDataListItem
               data={item} key={item.name} style={styles.itemContainer} />
-            <TouchableOpacity style={{ paddingRight: 16, paddingLeft: 12 }} hitSlop={24} onPress={() => {
+            {editFollowedListEnabled && <TouchableOpacity style={{ paddingRight: 16, paddingLeft: 12 }} hitSlop={24} onPress={() => {
               removeData(item)
             }}>
               <FontAwesome5 size={16} color={colors.red} name={'minus-circle'} />
             </TouchableOpacity>
+            }
           </View>
         </TouchableOpacity>
       </ScaleDecorator>
     )
   }
   return (
-    <DraggableFlatList
-      data={followedData}
-      onDragEnd={({ data }) => {
-        setAllData(data)
+    <>
+      <DraggableFlatList
+        data={followedData}
+        onDragEnd={({ data }) => {
+          setAllData(data)
+        }}
+        keyExtractor={(item) => item.name}
+        renderItem={renderItem}
+        containerStyle={{ flex: 1 }}
+        style={styles.container}
+        refreshControl={< RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={[Colors.darkBackground]}
+          tintColor={Colors.white}
+        />}
+        indicatorStyle='white'
+      />
+      <TouchableOpacity style={{
+        position: 'absolute', padding: 16, bottom: 32, right: 16,
+        backgroundColor: colors.darkerGray,
+        width: 48, height: 48,
+        borderRadius: 24,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
       }}
-      keyExtractor={(item) => item.name}
-      renderItem={renderItem}
-      containerStyle={{ flex: 1 }}
-      style={styles.container}
-      refreshControl={< RefreshControl
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        colors={[Colors.darkBackground]}
-        tintColor={Colors.white}
-      />}
-      indicatorStyle='white'
-    />
+        activeOpacity={0.6}
+        onPress={() => {
+          setEditingFollowedList(!editFollowedListEnabled)
+        }}
+      >
+        <FontAwesome5 size={16} color={colors.white} name={editFollowedListEnabled ? 'check' : 'edit'} />
+      </TouchableOpacity>
+    </>
   )
 }
 

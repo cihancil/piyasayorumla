@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useEffect } from 'react'
 import {
   View, Platform, StyleSheet, Text, TouchableOpacity, FlatList,
 } from 'react-native'
@@ -22,6 +22,13 @@ export default () => {
   const addData = useFollowStore((state) => state.addData)
   const removeData = useFollowStore((state) => state.removeData)
   const followedData = useFollowStore((state) => state.followedData)
+
+
+  useEffect(() => {
+    return () => {
+      setSearchLabel('')
+    }
+  }, [])
 
   return (
     <View style={styles.container}>

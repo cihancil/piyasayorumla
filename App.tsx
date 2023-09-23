@@ -4,7 +4,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import HomePage from '@src/pages/HomePage'
 import FollowListPage from '@src/pages/FollowListPage'
@@ -15,7 +14,6 @@ import Configs from '@src/utils/configs'
 import TabBarIcon from '@src/components/TabBarIcon'
 import HomeHeader from '@src/components/HomeHeader'
 import { useAuthStore } from '@src/stores/authStore'
-import AppText from '@src/components/AppText'
 import colors from '@src/utils/colors'
 
 const Tab = createBottomTabNavigator()
@@ -27,7 +25,6 @@ function App(): JSX.Element {
   useEffect(() => {
     anonymousAuthenticate()
   }, [])
-
 
   const FollowListStack = () => (
     <Stack.Navigator
@@ -55,28 +52,6 @@ function App(): JSX.Element {
           color: colors.white,
           fontWeight: 'bold',
         },
-        headerRight: () => (
-          <TouchableOpacity style={{ paddingHorizontal: 8 }}
-            hitSlop={16}
-            onPress={() => {
-              navigation.navigate('Search')
-            }}>
-            <FontAwesome5 name='search-plus' size={20} color={'white'} />
-          </TouchableOpacity>
-        ),
-        headerLeft: () => (
-          <TouchableOpacity style={{}}
-            hitSlop={16}
-            onPress={() => {
-              // navigation.navigate('Search')
-            }}>
-            <FontAwesome5 name='edit' size={18} color={'white'} />
-            {/* 
-            <AppText
-              style={{ color: colors.white, fontWeight: 'bold' }}
-            >{'Düzenle'}</AppText> */}
-          </TouchableOpacity>
-        )
       })} />
       <Stack.Screen name="Search" component={SearchPage} options={{
         headerTitle: 'Takip Listeme Ekle',
