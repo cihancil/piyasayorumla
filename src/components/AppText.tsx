@@ -1,6 +1,6 @@
-import { Text } from 'react-native'
+import { Text, TextProps } from 'react-native'
 
-export default (props: any) => {
+export default (props: TextProps) => {
   return (
     <Text {...props} />
   )

@@ -19,7 +19,7 @@ export default (props: TabBarIconProps) => {
     case 'Home':
       iconName = 'comments-dollar'
       break
-    case 'FollowList':
+    case 'FollowListStack':
       iconName = 'chart-bar'
       break
     case 'Search':
