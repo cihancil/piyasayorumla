@@ -9,7 +9,7 @@ type DataStore = {
   currencies: ForexData[],
   golds: ForexData[],
   exchanges: ForexData[],
-  fetchData: () => {},
+  fetchData: () => Promise<void>,
   setSearchLabel: (search: string) => void,
   searchLabel: string,
 }

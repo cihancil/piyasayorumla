@@ -24,19 +24,29 @@ const AndroidRefreshControl = createNativeWrapper(RefreshControl, {
 })
 
 export default ({ navigation }: { navigation: any }) => {
-  const followedData = useFollowStore((state) => state.followedData)
-  const fetchData = useDataStore((state) => state.fetchData)
   const firebaseUser = useAuthStore((state) => state.firebaseUser)
+
+  const currencies = useDataStore((state) => state.currencies)
+  const golds = useDataStore((state) => state.golds)
+  const exchanges = useDataStore((state) => state.exchanges)
+  const fetchData = useDataStore((state) => state.fetchData)
+
+  const followedData = useFollowStore((state) => state.followedData)
   const removeData = useFollowStore((state) => state.removeData)
   const setAllData = useFollowStore((state) => state.setAllData)
+  const setInitialData = useFollowStore((state) => state.setInitialData)
+
   const editFollowedListEnabled = useUIStore((state) => state.editFollowedListEnabled)
   const setEditingFollowedList = useUIStore((state) => state.setEditingFollowedList)
 
   const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
-    if (firebaseUser)
-      fetchData()
+    (async () => {
+      if (firebaseUser)
+        await fetchData()
+      setInitialData([...currencies, ...golds, ...exchanges])
+    })()
   }, [firebaseUser])
 
   useEffect(() => {
@@ -99,8 +109,10 @@ export default ({ navigation }: { navigation: any }) => {
         }}
         keyExtractor={(item) => item.name}
         renderItem={renderItem}
-        containerStyle={{ flex: 1 }}
-        style={styles.container}
+        containerStyle={styles.container}
+        contentContainerStyle={{
+          paddingBottom: 90
+        }}
         refreshControl={!!editFollowedListEnabled ? undefined : <AndroidRefreshControl
           refreshing={refreshing}
           enabled={!editFollowedListEnabled}
@@ -137,7 +149,7 @@ export default ({ navigation }: { navigation: any }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: Colors.darkBackground,
   },
   itemContainer: {

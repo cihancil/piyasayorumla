@@ -2,7 +2,9 @@ import { create } from 'zustand'
 import computed from "zustand-computed"
 
 import ForexData from '@src/models/ForexData'
-import { setFollowedDataStorage, getFollowedDataStorage } from '@src/utils/storage'
+import {
+  setFollowedDataStorage, getFollowedDataStorage, getInitialDataPopulated, setInitialDataPopulated,
+} from '@src/utils/storage'
 
 type FollowStore = {
   followedData: ForexData[],
@@ -10,6 +12,7 @@ type FollowStore = {
   addData: (data: ForexData) => void,
   removeData: (data: ForexData) => void,
   setAllData: (data: ForexData[]) => void,
+  setInitialData: (allData: ForexData[]) => void,
 }
 
 type ComputedStore = {
@@ -48,6 +51,17 @@ export const useFollowStore = create<FollowStore>()(
       setAllData: (data: ForexData[]) => {
         set((state) => {
           setFollowedDataStorage(data)
+          return { followedData: data }
+        })
+      },
+      setInitialData: (allData: ForexData[]) => {
+        set((state) => {
+          const populated = getInitialDataPopulated()
+          if (populated) return {}
+          if (state.followedData.length != 0) return {}
+          const initialNames = ['USD', 'EUR', 'GBP', 'Gram Altın', 'Ons Altın', 'BIST 100']
+          const data = allData.filter(d => initialNames.includes(d.name))
+          setInitialDataPopulated()
           return { followedData: data }
         })
       },
