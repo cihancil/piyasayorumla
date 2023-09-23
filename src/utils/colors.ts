@@ -1,5 +1,7 @@
 export default {
   white: '#ffffff',
+  red: 'red',
+  green: 'green',
   darkBackground: '#1c252e',
   accent: '#fe8d79',
   blue: '#a4d8ff',

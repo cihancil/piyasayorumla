@@ -1,13 +1,15 @@
 import { useRef, useState } from 'react'
 import {
-  View, Platform, StyleSheet, Text,
+  View, Platform, StyleSheet, Text, TouchableOpacity, FlatList,
 } from 'react-native'
 import { SearchBar } from '@rneui/themed'
-import { FlashList } from "@shopify/flash-list"
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import colors from '@src/utils/colors'
 import { useDataStore } from '@src/stores/dataStore'
+import { useFollowStore } from '@src/stores/followStore'
 import ForexDataListItem from '@src/components/ForexDataListItem'
+import AppText from '@src/components/AppText'
 export default () => {
   const inputRef = useRef(null)
   const updateSearch = (search: string) => {
@@ -16,6 +18,11 @@ export default () => {
   const searchedData = useDataStore((state) => state.searchedData)
   const setSearchLabel = useDataStore((state) => state.setSearchLabel)
   const searchLabel = useDataStore((state) => state.searchLabel)
+
+  const addData = useFollowStore((state) => state.addData)
+  const removeData = useFollowStore((state) => state.removeData)
+  const followedData = useFollowStore((state) => state.followedData)
+
   return (
     <View style={styles.container}>
       <SearchBar
@@ -35,16 +42,45 @@ export default () => {
         }}
         onChangeText={updateSearch}
       />
-      <FlashList
+      <FlatList
         data={searchedData}
-        renderItem={({ item }) => <ForexDataListItem data={item} style={{
-          paddingVertical: 4,
-        }} />}
-        estimatedItemSize={searchedData.length}
-        contentContainerStyle={{
-          paddingHorizontal: 8,
+        keyExtractor={item => item.name}
+        renderItem={({ item }) => {
+          const alreadyAdded = !!followedData.find(fd => fd.name == item.name)
+          return (
+            <View style={styles.itemContainer}>
+              <ForexDataListItem data={item} style={styles.item} />
+              <TouchableOpacity style={styles.addButtonContainer} hitSlop={24} onPress={() => {
+                if (alreadyAdded) {
+                  removeData(item)
+                } else {
+                  addData(item)
+                }
+              }}>
+                <FontAwesome5 size={16} color={alreadyAdded ? colors.red : colors.green} name={alreadyAdded ? 'minus-circle' : 'plus-circle'} />
+              </TouchableOpacity>
+            </View>
+          )
         }}
-      />
+      >
+        {searchedData.map(item => {
+          const alreadyAdded = !!followedData.find(fd => fd.name == item.name)
+          return (
+            <View style={styles.itemContainer}>
+              <ForexDataListItem data={item} style={styles.item} />
+              <TouchableOpacity style={styles.addButtonContainer} hitSlop={24} onPress={() => {
+                if (alreadyAdded) {
+                  removeData(item)
+                } else {
+                  addData(item)
+                }
+              }}>
+                <FontAwesome5 size={16} color={alreadyAdded ? colors.red : colors.green} name={alreadyAdded ? 'minus-circle' : 'plus-circle'} />
+              </TouchableOpacity>
+            </View>
+          )
+        })}
+      </FlatList>
     </View>
   )
 }
@@ -53,5 +89,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.darkBackground,
+  },
+  itemContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  item: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+  },
+  addButtonContainer: {
+    marginLeft: 24,
+    marginRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })

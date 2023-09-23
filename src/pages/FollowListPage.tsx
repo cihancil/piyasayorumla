@@ -1,18 +1,17 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  View, StyleSheet, ScrollView, RefreshControl,
+  View, StyleSheet, FlatList, RefreshControl,
 } from 'react-native'
 
 import Colors from '@src/utils/colors'
 import AppText from '@src/components/AppText'
 import { useDataStore } from '@src/stores/dataStore'
+import { useFollowStore } from '@src/stores/followStore'
 import { useAuthStore } from '@src/stores/authStore'
 import ForexDataListItem from '@src/components/ForexDataListItem'
 
 export default () => {
-  const currencies = useDataStore((state) => state.currencies)
-  const exchanges = useDataStore((state) => state.exchanges)
-  const golds = useDataStore((state) => state.golds)
+  const followedData = useFollowStore((state) => state.followedData)
 
   const fetchData = useDataStore((state) => state.fetchData)
   const firebaseUser = useAuthStore((state) => state.firebaseUser)
@@ -32,20 +31,23 @@ export default () => {
   }, [])
 
   return (
-    <ScrollView
+    <FlatList
+      data={followedData}
+      keyExtractor={item => item.name}
+      renderItem={
+        ({ item }) =>
+          <ForexDataListItem
+            data={item} key={item.name} style={styles.itemContainer} />
+      }
       style={styles.container}
-      refreshControl={<RefreshControl
+      refreshControl={< RefreshControl
         refreshing={refreshing}
         onRefresh={onRefresh}
         colors={[Colors.darkBackground]}
         tintColor={Colors.white}
       />}
       indicatorStyle='white'
-    >
-      {/* {[...currencies, ...golds, ...exchanges].map(e => <ForexDataListItem key={e.name} data={e} style={{
-        padding: 8
-      }} />)} */}
-    </ScrollView>
+    />
   )
 }
 
@@ -53,5 +55,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.darkBackground,
-  }
+  },
+  itemContainer: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+  },
 })
