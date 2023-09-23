@@ -17,6 +17,7 @@ import { createNativeWrapper } from 'react-native-gesture-handler'
 import ForexDataListItem from '@src/components/ForexDataListItem'
 import ForexData from '@src/models/ForexData'
 import colors from '@src/utils/colors'
+import ForexDetailBottomSheet from '@src/components/ForexDetailBottomSheet'
 
 const AndroidRefreshControl = createNativeWrapper(RefreshControl, {
   disallowInterruption: true,
@@ -40,6 +41,7 @@ export default ({ navigation }: { navigation: any }) => {
   const setEditingFollowedList = useUIStore((state) => state.setEditingFollowedList)
 
   const [refreshing, setRefreshing] = useState(false)
+  const [bottom, setBottom] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -80,6 +82,9 @@ export default ({ navigation }: { navigation: any }) => {
             ReactNativeHapticFeedback.trigger("impactLight")
             drag()
           } : undefined}
+          onPress={editFollowedListEnabled ? undefined : () => {
+            setBottom(true)
+          }}
           style={{}}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', }}>
@@ -143,6 +148,9 @@ export default ({ navigation }: { navigation: any }) => {
       >
         <FontAwesome5 size={16} color={colors.white} name={editFollowedListEnabled ? 'check' : 'edit'} />
       </TouchableOpacity>
+      <ForexDetailBottomSheet open={bottom} onClose={() => {
+        setBottom(false)
+      }} />
     </>
   )
 }
