@@ -3,6 +3,7 @@ import computed from "zustand-computed"
 import firestore from '@react-native-firebase/firestore'
 
 import ForexData from '@src/models/ForexData'
+import { TRtoEN } from '@src/utils/helpers'
 
 type DataStore = {
   currencies: ForexData[],
@@ -17,14 +18,19 @@ type ComputedStore = {
   searchedData: ForexData[],
 }
 
-const computeState = (state: DataStore): ComputedStore => ({
-  searchedData: [...state.currencies, ...state.golds, ...state.exchanges]
+
+const computeState = (state: DataStore): ComputedStore => {
+  const searchTerm = TRtoEN(state.searchLabel.toLowerCase())
+  const data = [...state.currencies, ...state.golds, ...state.exchanges]
     .filter(fd =>
-      (fd.name.toLowerCase().indexOf(state.searchLabel.toLowerCase()) != -1)
+      (TRtoEN(fd.name.toLowerCase()).indexOf(searchTerm) != -1)
       ||
-      (fd.fullName && fd.fullName!.toLowerCase().indexOf(state.searchLabel.toLowerCase()) != -1)
+      (fd.fullName && TRtoEN(fd.fullName!.toLowerCase()).indexOf(searchTerm) != -1)
     )
-})
+  return {
+    searchedData: data
+  }
+}
 
 export const useDataStore = create<DataStore>()(
   computed(
