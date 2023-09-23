@@ -62,25 +62,7 @@ export default () => {
             </View>
           )
         }}
-      >
-        {searchedData.map(item => {
-          const alreadyAdded = !!followedData.find(fd => fd.name == item.name)
-          return (
-            <View style={styles.itemContainer}>
-              <ForexDataListItem data={item} style={styles.item} />
-              <TouchableOpacity style={styles.addButtonContainer} hitSlop={24} onPress={() => {
-                if (alreadyAdded) {
-                  removeData(item)
-                } else {
-                  addData(item)
-                }
-              }}>
-                <FontAwesome5 size={16} color={alreadyAdded ? colors.red : colors.green} name={alreadyAdded ? 'minus-circle' : 'plus-circle'} />
-              </TouchableOpacity>
-            </View>
-          )
-        })}
-      </FlatList>
+      />
     </View>
   )
 }
