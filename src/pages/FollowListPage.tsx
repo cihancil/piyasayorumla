@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  View, StyleSheet, FlatList, RefreshControl, TouchableOpacity
+  View, StyleSheet, FlatList, RefreshControl, TouchableOpacity, Platform
 } from 'react-native'
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -12,10 +12,16 @@ import { useDataStore } from '@src/stores/dataStore'
 import { useFollowStore } from '@src/stores/followStore'
 import { useAuthStore } from '@src/stores/authStore'
 import { useUIStore } from '@src/stores/uiStore'
+import { createNativeWrapper } from 'react-native-gesture-handler'
 
 import ForexDataListItem from '@src/components/ForexDataListItem'
 import ForexData from '@src/models/ForexData'
 import colors from '@src/utils/colors'
+
+const AndroidRefreshControl = createNativeWrapper(RefreshControl, {
+  disallowInterruption: true,
+  shouldCancelWhenOutside: false
+})
 
 export default ({ navigation }: { navigation: any }) => {
   const followedData = useFollowStore((state) => state.followedData)
@@ -95,8 +101,9 @@ export default ({ navigation }: { navigation: any }) => {
         renderItem={renderItem}
         containerStyle={{ flex: 1 }}
         style={styles.container}
-        refreshControl={< RefreshControl
+        refreshControl={!!editFollowedListEnabled ? undefined : <AndroidRefreshControl
           refreshing={refreshing}
+          enabled={!editFollowedListEnabled}
           onRefresh={onRefresh}
           colors={[Colors.darkBackground]}
           tintColor={Colors.white}
