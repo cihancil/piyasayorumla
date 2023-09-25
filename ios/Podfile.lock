@@ -1399,7 +1399,7 @@ PODS:
     - RNFBApp
   - RNFlashList (1.6.1):
     - React-Core
-  - RNGestureHandler (2.12.1):
+  - RNGestureHandler (2.13.1):
     - React-Core
   - RNReactNativeHapticFeedback (2.2.0):
     - React-Core
@@ -1791,7 +1791,7 @@ SPEC CHECKSUMS:
   RNFBInAppMessaging: d3e63564c68d35e75b009f58ae422c9a7bc796a4
   RNFBInstallations: 282c3cc2d67d242e6e5ffaf15780d915eef7c6f0
   RNFlashList: 236646d48f224a034f35baa0242e1b77db063b1e
-  RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
+  RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
   RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9
   RNReanimated: 726395a2fa2f04cea340274ba57a4e659bc0d9c1
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
