@@ -39,9 +39,9 @@ export default ({ navigation }: { navigation: any }) => {
 
   const editFollowedListEnabled = useUIStore((state) => state.editFollowedListEnabled)
   const setEditingFollowedList = useUIStore((state) => state.setEditingFollowedList)
+  const setBottomSheetForexData = useUIStore((state) => state.setBottomSheetForexData)
 
   const [refreshing, setRefreshing] = useState(false)
-  const [bottom, setBottom] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -83,7 +83,7 @@ export default ({ navigation }: { navigation: any }) => {
             drag()
           } : undefined}
           onPress={editFollowedListEnabled ? undefined : () => {
-            setBottom(true)
+            setBottomSheetForexData(item)
           }}
           style={{}}
         >
@@ -148,9 +148,9 @@ export default ({ navigation }: { navigation: any }) => {
       >
         <FontAwesome5 size={16} color={colors.white} name={editFollowedListEnabled ? 'check' : 'edit'} />
       </TouchableOpacity>
-      <ForexDetailBottomSheet open={bottom} onClose={() => {
+      {/* <ForexDetailBottomSheet open={bottom} onClose={() => {
         setBottom(false)
-      }} />
+      }} /> */}
     </>
   )
 }

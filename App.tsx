@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import ForexDetailBottomSheet from '@src/components/ForexDetailBottomSheet'
 
 import HomePage from '@src/pages/HomePage'
 import FollowListPage from '@src/pages/FollowListPage'
@@ -92,6 +93,9 @@ function App(): JSX.Element {
             <Tab.Screen name="Menu" component={MenuPage} />
           </Tab.Navigator>
         </NavigationContainer>
+        <ForexDetailBottomSheet onClose={() => {
+          // setBottom(false)
+        }} />
       </SafeAreaView>
     </GestureHandlerRootView>
   )
