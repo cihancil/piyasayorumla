@@ -41,7 +41,7 @@ export const useDataStore = create<DataStore>()(
       searchLabel: '',
       fetchData: async () => {
         const dovizapiSnapshot = await firestore().collection('dovizapi').get()
-        let currencies, golds, exchanges
+        let currencies: ForexData[] = [], golds: ForexData[] = [], exchanges: ForexData[] = []
         dovizapiSnapshot.forEach(doc => {
           const docId = doc.id
           const docData = doc.data()
