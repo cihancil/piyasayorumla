@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import computed from "zustand-computed"
 import firestore from '@react-native-firebase/firestore'
 
-import ForexData from '@src/models/ForexData'
+import ForexData, { DataType } from '@src/models/ForexData'
 import { TRtoEN } from '@src/utils/helpers'
 
 type DataStore = {
@@ -47,12 +47,22 @@ export const useDataStore = create<DataStore>()(
           const docData = doc.data()
           if (docId == 'kur') {
             currencies = Object.values(docData)
+            currencies.forEach(c => {
+              c.type = DataType.kur
+            })
           }
           if (docId == 'gold') {
             golds = Object.values(docData)
+            golds.forEach(g => {
+              console.log(g.endpoint)
+              g.type = DataType.gold
+            })
           }
           if (docId == 'borsa') {
             exchanges = Object.values(docData)
+            exchanges.forEach(e => {
+              e.type = DataType.borsa
+            })
           }
         })
         set({ currencies: currencies, golds: golds, exchanges: exchanges })

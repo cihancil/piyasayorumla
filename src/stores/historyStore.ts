@@ -1,14 +1,17 @@
 import { create } from 'zustand'
 import computed from "zustand-computed"
-// import functions from '@react-native-firebase/functions'
+import { firebase } from '@react-native-firebase/functions'
 
-import ForexData from '@src/models/ForexData'
+import ForexData, { DataType } from '@src/models/ForexData'
+
+const FUNCTION_REGION = 'europe-west1'
 
 type HistoryStore = {
-  daily: string[],
+  dailyHistoryData: any[],
   // weekly: string[],
   // monthly: string[],
-  fetchDaily: (forexData: ForexData) => void,
+  isFetching: boolean,
+  fetchHistory: (forexData: ForexData) => void,
 }
 
 type ComputedStore = {
@@ -21,10 +24,26 @@ const computeState = (state: HistoryStore): ComputedStore => ({
 export const useHistoryStore = create<HistoryStore>()(
   computed(
     (set) => ({
-      daily: [],
-      fetchDaily: async (forexData: ForexData) => {
-
-
+      dailyHistoryData: [],
+      isFetching: false,
+      fetchHistory: async (forexData: ForexData) => {
+        console.log('fetchHistory', forexData)
+        if (!forexData) return {}
+        try {
+          set({ isFetching: true })
+          if (!forexData.endpoint) return {}
+          firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)
+          const response = await firebase.app().functions(FUNCTION_REGION).httpsCallable('historyCall')({
+            name: forexData.endpoint,
+            type: forexData.type,
+          })
+          console.log('response', response.data)
+          set({ dailyHistoryData: response.data, isFetching: false })
+        } catch (error) {
+          console.log('ERROR', error)
+          set({ isFetching: false })
+        }
+        return {}
       },
     }), computeState)
 )
