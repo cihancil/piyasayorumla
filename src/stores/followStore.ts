@@ -56,6 +56,7 @@ export const useFollowStore = create<FollowStore>()(
       },
       setInitialData: (allData: ForexData[]) => {
         set((state) => {
+          if (allData.length == 0) return {}
           const populated = getInitialDataPopulated()
           if (populated) return {}
           if (state.followedData.length != 0) return {}

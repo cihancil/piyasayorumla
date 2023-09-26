@@ -47,9 +47,13 @@ export default ({ navigation }: { navigation: any }) => {
     (async () => {
       if (firebaseUser)
         await fetchData()
-      setInitialData([...currencies, ...golds, ...exchanges])
     })()
   }, [firebaseUser])
+
+  useEffect(() => {
+    if (firebaseUser)
+      setInitialData([...currencies, ...golds, ...exchanges])
+  }, [firebaseUser, currencies, golds, exchanges])
 
   useEffect(() => {
     navigation.setOptions({
