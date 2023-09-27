@@ -31,10 +31,17 @@ export const useHistoryStore = create<HistoryStore>()(
       fetchHistory: async (forexData: ForexData) => {
         if (!forexData) return {}
         try {
-          set({ isFetching: true })
+          set({
+            isFetching: true,
+            dailyHistoryData: [],
+            monthlyHistoryData: [],
+            yearlyHistoryData: [],
+          })
           let param
           if (forexData.type == DataType.gold) {
             param = forexData.endpoint
+          } else if (forexData.name == 'BIST 100') {
+            param = 'XU100'
           } else {
             param = forexData.name
           }
