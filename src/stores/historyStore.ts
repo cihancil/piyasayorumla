@@ -8,8 +8,8 @@ const FUNCTION_REGION = 'europe-west1'
 
 type HistoryStore = {
   dailyHistoryData: any[],
-  // weekly: string[],
-  // monthly: string[],
+  monthlyHistoryData: any[],
+  yearlyHistoryData: any[],
   isFetching: boolean,
   fetchHistory: (forexData: ForexData) => void,
 }
@@ -25,20 +25,34 @@ export const useHistoryStore = create<HistoryStore>()(
   computed(
     (set) => ({
       dailyHistoryData: [],
+      monthlyHistoryData: [],
+      yearlyHistoryData: [],
       isFetching: false,
       fetchHistory: async (forexData: ForexData) => {
-        console.log('fetchHistory', forexData)
         if (!forexData) return {}
         try {
           set({ isFetching: true })
-          if (!forexData.endpoint) return {}
+          let param
+          if (forexData.type == DataType.gold) {
+            param = forexData.endpoint
+          } else {
+            param = forexData.name
+          }
+          console.log('fetch', param)
+
+          if (!param) return {}
           firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)
           const response = await firebase.app().functions(FUNCTION_REGION).httpsCallable('historyCall')({
-            name: forexData.endpoint,
+            name: param,
             type: forexData.type,
           })
-          console.log('response', response.data)
-          set({ dailyHistoryData: response.data, isFetching: false })
+          const { daily, monthly, yearly } = response.data
+          set({
+            dailyHistoryData: daily,
+            monthlyHistoryData: monthly,
+            yearlyHistoryData: yearly,
+            isFetching: false,
+          })
         } catch (error) {
           console.log('ERROR', error)
           set({ isFetching: false })

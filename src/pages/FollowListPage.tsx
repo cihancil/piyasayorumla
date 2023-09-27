@@ -87,6 +87,7 @@ export default ({ navigation }: { navigation: any }) => {
             drag()
           } : undefined}
           onPress={editFollowedListEnabled ? undefined : () => {
+            console.log('setBottomSheetForexData', item)
             setBottomSheetForexData(item)
           }}
           style={{}}

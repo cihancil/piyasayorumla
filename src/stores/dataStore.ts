@@ -54,7 +54,6 @@ export const useDataStore = create<DataStore>()(
           if (docId == 'gold') {
             golds = Object.values(docData)
             golds.forEach(g => {
-              console.log(g.endpoint)
               g.type = DataType.gold
             })
           }
