@@ -7,11 +7,11 @@ import {
 } from '@src/utils/storage'
 
 type FollowStore = {
-  followedData: ForexData[],
+  followedDataNames: string[],
   clearFollowedData: () => void,
   addData: (data: ForexData) => void,
   removeData: (data: ForexData) => void,
-  setAllData: (data: ForexData[]) => void,
+  setAllData: (followedData: string[]) => void,
   setInitialData: (allData: ForexData[]) => void,
 }
 
@@ -25,45 +25,44 @@ const computeState = (state: FollowStore): ComputedStore => ({
 export const useFollowStore = create<FollowStore>()(
   computed(
     (set) => ({
-      followedData: getFollowedDataStorage(),
+      followedDataNames: getFollowedDataStorage(),
       clearFollowedData: () => {
         setFollowedDataStorage([])
-        set({ followedData: [] })
+        set({ followedDataNames: [] })
       },
       addData: (data: ForexData) => {
         set((state) => {
-          const found = state.followedData.find(fd => fd.name == data.name)
+          const found = state.followedDataNames.find(fd => fd == data.name)
           if (!!found) {
             return {}
           }
-          const followedData = [...state.followedData, data]
-          setFollowedDataStorage(followedData)
-          return { followedData: followedData }
+          const followedDataNames = [...state.followedDataNames, data.name]
+          setFollowedDataStorage(followedDataNames)
+          return { followedDataNames: followedDataNames }
         })
       },
       removeData: (data: ForexData) => {
         set((state) => {
-          const remaining = [...state.followedData.filter(fd => fd.name != data.name)]
+          const remaining = [...state.followedDataNames.filter(fd => fd != data.name)]
           setFollowedDataStorage(remaining)
-          return { followedData: remaining }
+          return { followedDataNames: remaining }
         })
       },
-      setAllData: (data: ForexData[]) => {
+      setAllData: (followedDataNames: string[]) => {
         set((state) => {
-          setFollowedDataStorage(data)
-          return { followedData: data }
+          setFollowedDataStorage(followedDataNames)
+          return { followedDataNames: followedDataNames }
         })
       },
-      setInitialData: (allData: ForexData[]) => {
+      setInitialData: () => {
         set((state) => {
-          if (allData.length == 0) return {}
           const populated = getInitialDataPopulated()
           if (populated) return {}
-          if (state.followedData.length != 0) return {}
+          if (state.followedDataNames.length != 0) return {}
           const initialNames = ['USD', 'EUR', 'GBP', 'Gram Altın', 'Ons Altın', 'BIST 100']
-          const data = allData.filter(d => initialNames.includes(d.name))
+          setFollowedDataStorage(initialNames)
           setInitialDataPopulated()
-          return { followedData: data }
+          return { followedDataNames: initialNames }
         })
       },
     }), computeState)

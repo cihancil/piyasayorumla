@@ -48,7 +48,7 @@ export const useHistoryStore = create<HistoryStore>()(
           console.log('fetch', param)
 
           if (!param) return {}
-          firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)
+          // firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)
           const response = await firebase.app().functions(FUNCTION_REGION).httpsCallable('historyCall')({
             name: param,
             type: forexData.type,

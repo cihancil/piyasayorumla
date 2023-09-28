@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import {
   View, StyleSheet, FlatList, RefreshControl, TouchableOpacity, Platform
 } from 'react-native'
@@ -32,7 +32,7 @@ export default ({ navigation }: { navigation: any }) => {
   const exchanges = useDataStore((state) => state.exchanges)
   const fetchData = useDataStore((state) => state.fetchData)
 
-  const followedData = useFollowStore((state) => state.followedData)
+  const followedDataNames = useFollowStore((state) => state.followedDataNames)
   const removeData = useFollowStore((state) => state.removeData)
   const setAllData = useFollowStore((state) => state.setAllData)
   const setInitialData = useFollowStore((state) => state.setInitialData)
@@ -77,6 +77,18 @@ export default ({ navigation }: { navigation: any }) => {
     }, 300)
   }, [])
 
+  const followedData = useMemo(() => {
+    const followedData: ForexData[] = []
+    const allData = [...currencies, ...golds, ...exchanges]
+    followedDataNames.forEach(fdName => {
+      const found = allData.find(d => d.name == fdName)
+      if (found) {
+        followedData.push(found)
+      }
+    })
+    return followedData
+  }, [followedDataNames, currencies, golds, exchanges])
+
   const renderItem = ({ item, drag, isActive }: RenderItemParams<ForexData>) => {
     return (
       <ScaleDecorator>
@@ -115,7 +127,7 @@ export default ({ navigation }: { navigation: any }) => {
       <DraggableFlatList
         data={followedData}
         onDragEnd={({ data }) => {
-          setAllData(data)
+          setAllData(data.map(d => d.name))
         }}
         keyExtractor={(item) => item.name}
         renderItem={renderItem}

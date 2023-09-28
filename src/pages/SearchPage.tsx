@@ -21,7 +21,7 @@ export default () => {
 
   const addData = useFollowStore((state) => state.addData)
   const removeData = useFollowStore((state) => state.removeData)
-  const followedData = useFollowStore((state) => state.followedData)
+  const followedDataNames = useFollowStore((state) => state.followedDataNames)
 
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default () => {
         data={searchedData}
         keyExtractor={item => item.name}
         renderItem={({ item }) => {
-          const alreadyAdded = !!followedData.find(fd => fd.name == item.name)
+          const alreadyAdded = !!followedDataNames.find(fdName => fdName == item.name)
           return (
             <View style={styles.itemContainer}>
               <ForexDataListItem data={item} style={styles.item} />
