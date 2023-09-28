@@ -60,8 +60,9 @@ function App(): JSX.Element {
     </Stack.Navigator>
   )
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-
+    <GestureHandlerRootView style={{
+      flex: 1, backgroundColor: colors.darkBackground,
+    }}>
       <SafeAreaView style={styles.container}>
         <StatusBar
           animated={true}

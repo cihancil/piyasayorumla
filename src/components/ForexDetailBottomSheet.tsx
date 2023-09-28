@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
 
 import { useUIStore } from '@src/stores/uiStore'
 import { useHistoryStore } from '@src/stores/historyStore'
 import AppText from './AppText'
 import ForexGraph from '@src/components/ForexGraph'
+import colors from '@src/utils/colors'
 
 interface ForexDetailBottomSheetProps {
   onClose: () => void
@@ -78,11 +79,23 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      snapPoints={[360]}
+      snapPoints={[400]}
       enablePanDownToClose
       onClose={() => {
         setBottomSheetForexData(null)
       }}
+      handleStyle={{
+        backgroundColor: colors.darkBackground,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+      }}
+      handleIndicatorStyle={{
+        backgroundColor: colors.darkGray,
+      }}
+      backgroundStyle={{
+        backgroundColor: colors.darkBackground,
+      }}
+      overDragResistanceFactor={0}
       backdropComponent={props => (<BottomSheetBackdrop {...props}
         opacity={0.5}
         enableTouchThrough={false}
@@ -91,16 +104,16 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
         style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]} />)}
     >
       <View style={styles.container}>
-        <Text>ForexDetailBottomSheet</Text>
-        {isFetching && <Text>BUSY</Text>}
-        <Text>{bottomSheetForexData?.endpoint}</Text>
+        {isFetching && <ActivityIndicator />}
         {!isFetching && <ForexGraph
           dailyPoints={dailyPoints}
           monthlyPoints={monthlyPoints}
           yearlyPoints={yearlyPoints}
+          forexData={bottomSheetForexData}
         />}
       </View>
     </BottomSheet >
+
   )
 }
 
@@ -109,5 +122,7 @@ export default ForexDetailBottomSheet
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    backgroundColor: colors.darkBackground,
   }
 })

@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react'
-import { Text, View, StyleSheet, Button } from 'react-native'
+import React, { useMemo, useCallback, useState } from 'react'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { GraphPoint, LineGraph } from 'react-native-graph'
 import dayjs from 'dayjs'
 
@@ -7,12 +7,16 @@ require('dayjs/locale/tr')
 dayjs.locale('tr')
 
 import AppText from '@src/components/AppText'
-const GRADIENT_FILL_COLORS = ['#7476df5D', '#7476df4D', '#7476df00']
+import colors from '@src/utils/colors'
+import ForexData from '@src/models/ForexData'
+
+const GRADIENT_FILL_COLORS = ['#a4d8ff', '#80a7c6', '#5d788f', '#3b4c5d', '#1c252e']
 
 interface ForexGraphProps {
   dailyPoints: GraphPoint[],
   monthlyPoints: GraphPoint[],
   yearlyPoints: GraphPoint[],
+  forexData: ForexData,
 }
 
 const ForexGraph = (props: ForexGraphProps) => {
@@ -41,43 +45,77 @@ const ForexGraph = (props: ForexGraphProps) => {
     setPoint(point)
   }
 
-  return (
-    <View style={styles.container}>
-      {point && <>
-        <AppText>
-          {dayjs(point.date).format(index == 0 ? 'D MMMM YYYY HH:mm' : 'D MMMM YYYY')}
+  const renderInfo = useCallback(() => {
+    if (!point) return null
+    return (
+      <View style={{
+        paddingHorizontal: 16, paddingVertical: 8,
+      }}>
+        <AppText style={{ color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
+          {props.forexData.fullName || props.forexData.name}
         </AppText>
-        <AppText>
+        <AppText style={{ color: colors.white, fontWeight: 'bold', fontSize: 24 }}>
           {point.value}
         </AppText>
-        <AppText>
-          {points.length}
+        <AppText style={{ color: colors.white, fontSize: 12, }}>
+          {dayjs(point.date).format(index == 0 ? 'D MMMM YYYY HH:mm' : 'D MMMM YYYY')}
         </AppText>
-      </>}
-      <View style={{ flexDirection: 'row' }}>
-        <Button title='daily' onPress={() => setIndex(0)} />
-        <Button title='monthly' onPress={() => setIndex(1)} />
-        <Button title='yearly' onPress={() => setIndex(2)} />
+      </View >
+    )
+  }, [point, props.forexData])
+
+  const renderButtons = useCallback(() => {
+    return (
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20, marginTop: 20 }}>
+        <TouchableOpacity hitSlop={16} style={{ marginHorizontal: 32 }} onPress={() => setIndex(0)}>
+          <AppText style={{
+            color: (index == 0) ? colors.blue : colors.darkGray,
+            fontWeight: 'bold',
+          }}>
+            Bugün
+          </AppText>
+        </TouchableOpacity>
+        <TouchableOpacity hitSlop={16} style={{ marginHorizontal: 32 }} onPress={() => setIndex(1)}>
+          <AppText style={{
+            color: (index == 1) ? colors.blue : colors.darkGray,
+            fontWeight: 'bold',
+          }}>
+            Bu Ay
+          </AppText>
+        </TouchableOpacity>
+        <TouchableOpacity hitSlop={16} style={{ marginHorizontal: 32 }} onPress={() => setIndex(2)}>
+          <AppText style={{
+            color: (index == 2) ? colors.blue : colors.darkGray,
+            fontWeight: 'bold',
+          }}>
+            Bu Yıl
+          </AppText>
+        </TouchableOpacity>
       </View>
+    )
+  }, [index, setIndex])
+
+  return (
+    <View style={styles.container}>
+      {renderInfo()}
+      {renderButtons()}
       <LineGraph
         points={points}
         animated={true}
-        color="#4484B2"
+        color={colors.blue}
         enablePanGesture
         panGestureDelay={0}
         gradientFillColors={GRADIENT_FILL_COLORS}
         verticalPadding={36}
         style={{
           flex: 1,
-          height: 180,
-          marginBottom: 40,
         }}
         onPointSelected={(p) => updatePriceTitle(p)}
         onGestureEnd={() => {
           setPoint(points[points.length - 1])
         }}
       />
-    </View>
+    </View >
   )
 }
 
