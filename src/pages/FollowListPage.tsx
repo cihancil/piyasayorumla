@@ -17,7 +17,6 @@ import { createNativeWrapper } from 'react-native-gesture-handler'
 import ForexDataListItem from '@src/components/ForexDataListItem'
 import ForexData from '@src/models/ForexData'
 import colors from '@src/utils/colors'
-import ForexDetailBottomSheet from '@src/components/ForexDetailBottomSheet'
 
 const AndroidRefreshControl = createNativeWrapper(RefreshControl, {
   disallowInterruption: true,
@@ -42,6 +41,25 @@ export default ({ navigation }: { navigation: any }) => {
   const setBottomSheetForexData = useUIStore((state) => state.setBottomSheetForexData)
 
   const [refreshing, setRefreshing] = useState(false)
+
+
+
+  useEffect(() => {
+    let refreshIntervalId: any
+    const unsubscribeFocus = navigation.addListener('focus', async () => {
+      await onRefresh()
+      refreshIntervalId = setInterval(async () => {
+        await fetchData()
+      }, 5000)
+    })
+    const unsubscribeBlur = navigation.addListener('blur', async () => {
+      clearInterval(refreshIntervalId)
+    })
+    return () => {
+      unsubscribeFocus()
+      unsubscribeBlur()
+    }
+  }, [])
 
   useEffect(() => {
     (async () => {
@@ -72,9 +90,8 @@ export default ({ navigation }: { navigation: any }) => {
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
     await fetchData()
-    setTimeout(() => {
-      setRefreshing(false)
-    }, 300)
+    await new Promise(resolve => setTimeout(resolve, 300))
+    setRefreshing(false)
   }, [])
 
   const followedData = useMemo(() => {
