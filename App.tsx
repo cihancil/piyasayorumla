@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { SafeAreaView, StyleSheet, StatusBar, TouchableOpacity, View, Platform } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
@@ -16,15 +16,29 @@ import TabBarIcon from '@src/components/TabBarIcon'
 import HomeHeader from '@src/components/HomeHeader'
 import { useAuthStore } from '@src/stores/authStore'
 import colors from '@src/utils/colors'
+import { useDataStore } from '@src/stores/dataStore'
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
 
 function App(): JSX.Element {
   const anonymousAuthenticate = useAuthStore((state) => state.anonymousAuthenticate)
+  const firebaseUser = useAuthStore((state) => state.firebaseUser)
+  const fetchMeta = useDataStore((state) => state.fetchMeta)
 
   useEffect(() => {
     anonymousAuthenticate()
+  }, [])
+
+  useEffect(() => {
+    (async () => {
+      if (firebaseUser)
+        await initialize()
+    })()
+  }, [firebaseUser])
+
+  const initialize = useCallback(async () => {
+    await fetchMeta()
   }, [])
 
   const FollowListStack = () => (

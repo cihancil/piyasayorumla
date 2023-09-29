@@ -693,6 +693,9 @@ PODS:
   - Firebase/Installations (10.15.0):
     - Firebase/CoreOnly
     - FirebaseInstallations (~> 10.15.0)
+  - Firebase/Storage (10.15.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 10.15.0)
   - FirebaseABTesting (10.15.0):
     - FirebaseCore (~> 10.0)
   - FirebaseAnalytics (10.15.0):
@@ -768,6 +771,12 @@ PODS:
     - PromisesObjC (~> 2.1)
   - FirebaseMessagingInterop (10.15.0)
   - FirebaseSharedSwift (10.15.0)
+  - FirebaseStorage (10.15.0):
+    - FirebaseAppCheckInterop (~> 10.0)
+    - FirebaseAuthInterop (~> 10.0)
+    - FirebaseCore (~> 10.0)
+    - FirebaseCoreExtension (~> 10.0)
+    - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - fmt (6.2.1)
   - glog (0.3.5)
   - GoogleAppMeasurement (10.15.0):
@@ -1339,6 +1348,10 @@ PODS:
     - Firebase/Installations (= 10.15.0)
     - React-Core
     - RNFBApp
+  - RNFBStorage (18.5.0):
+    - Firebase/Storage (= 10.15.0)
+    - React-Core
+    - RNFBApp
   - RNFlashList (1.6.1):
     - React-Core
   - RNGestureHandler (2.13.1):
@@ -1437,6 +1450,7 @@ DEPENDENCIES:
   - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
   - "RNFBInAppMessaging (from `../node_modules/@react-native-firebase/in-app-messaging`)"
   - "RNFBInstallations (from `../node_modules/@react-native-firebase/installations`)"
+  - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
@@ -1467,6 +1481,7 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseMessagingInterop
     - FirebaseSharedSwift
+    - FirebaseStorage
     - fmt
     - GoogleAppMeasurement
     - GoogleUtilities
@@ -1592,6 +1607,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/in-app-messaging"
   RNFBInstallations:
     :path: "../node_modules/@react-native-firebase/installations"
+  RNFBStorage:
+    :path: "../node_modules/@react-native-firebase/storage"
   RNFlashList:
     :path: "../node_modules/@shopify/flash-list"
   RNGestureHandler:
@@ -1635,6 +1652,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: cae95cab0f965ce05b805189de1d4c70b11c76fb
   FirebaseMessagingInterop: 83f7b1a363bfe30ec8bbff1aa708d38e9d456373
   FirebaseSharedSwift: 34b11d9e675e14ee55e160cb7645bba30a192d14
+  FirebaseStorage: 1d4be239ea32fb3c0f3680a6f2b706d6cabe37f2
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   GoogleAppMeasurement: 722db6550d1e6d552b08398b69a975ac61039338
@@ -1694,6 +1712,7 @@ SPEC CHECKSUMS:
   RNFBFunctions: e224b9c0165ae4fd275ab65f49b827372cbf91fd
   RNFBInAppMessaging: 750773db4bb2c334170116fa64745d39355b9d32
   RNFBInstallations: e96e035a046fa29c5c4ee95486e410478f798c63
+  RNFBStorage: aa0d6ac695aff1841f2b87285bb90ed6271d37d9
   RNFlashList: 236646d48f224a034f35baa0242e1b77db063b1e
   RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
   RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9

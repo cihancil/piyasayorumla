@@ -24,15 +24,13 @@ const AndroidRefreshControl = createNativeWrapper(RefreshControl, {
 })
 
 export default ({ navigation }: { navigation: any }) => {
-  const firebaseUser = useAuthStore((state) => state.firebaseUser)
-
-  const currencies = useDataStore((state) => state.currencies)
-  const golds = useDataStore((state) => state.golds)
-  const exchanges = useDataStore((state) => state.exchanges)
-  const fetchData = useDataStore((state) => state.fetchData)
+  // const currencies = useDataStore((state) => state.currencies)
+  // const golds = useDataStore((state) => state.golds)
+  // const exchanges = useDataStore((state) => state.exchanges)
+  // const fetchData = useDataStore((state) => state.fetchData)
 
   const followedDataNames = useFollowStore((state) => state.followedDataNames)
-  const removeData = useFollowStore((state) => state.removeData)
+  const removeDataKey = useFollowStore((state) => state.removeDataKey)
   const setAllData = useFollowStore((state) => state.setAllData)
   const setInitialData = useFollowStore((state) => state.setInitialData)
 
@@ -49,7 +47,7 @@ export default ({ navigation }: { navigation: any }) => {
     const unsubscribeFocus = navigation.addListener('focus', async () => {
       await onRefresh()
       refreshIntervalId = setInterval(async () => {
-        await fetchData()
+        // await fetchData()
       }, 5000)
     })
     const unsubscribeBlur = navigation.addListener('blur', async () => {
@@ -61,17 +59,10 @@ export default ({ navigation }: { navigation: any }) => {
     }
   }, [])
 
-  useEffect(() => {
-    (async () => {
-      if (firebaseUser)
-        await fetchData()
-    })()
-  }, [firebaseUser])
-
-  useEffect(() => {
-    if (firebaseUser)
-      setInitialData([...currencies, ...golds, ...exchanges])
-  }, [firebaseUser, currencies, golds, exchanges])
+  // useEffect(() => {
+  //   if (firebaseUser)
+  //     setInitialData([...currencies, ...golds, ...exchanges])
+  // }, [firebaseUser, currencies, golds, exchanges])
 
   useEffect(() => {
     navigation.setOptions({
@@ -89,22 +80,22 @@ export default ({ navigation }: { navigation: any }) => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
-    await fetchData()
+    // await fetchData()
     await new Promise(resolve => setTimeout(resolve, 300))
     setRefreshing(false)
   }, [])
 
-  const followedData = useMemo(() => {
-    const followedData: ForexData[] = []
-    const allData = [...currencies, ...golds, ...exchanges]
-    followedDataNames.forEach(fdName => {
-      const found = allData.find(d => d.name == fdName)
-      if (found) {
-        followedData.push(found)
-      }
-    })
-    return followedData
-  }, [followedDataNames, currencies, golds, exchanges])
+  // const followedData = useMemo(() => {
+  //   const followedData: ForexData[] = []
+  //   const allData = [...currencies, ...golds, ...exchanges]
+  //   followedDataNames.forEach(fdName => {
+  //     const found = allData.find(d => d.name == fdName)
+  //     if (found) {
+  //       followedData.push(found)
+  //     }
+  //   })
+  //   return followedData
+  // }, [followedDataNames, currencies, golds, exchanges])
 
   const renderItem = ({ item, drag, isActive }: RenderItemParams<ForexData>) => {
     return (
@@ -129,7 +120,7 @@ export default ({ navigation }: { navigation: any }) => {
             <ForexDataListItem
               data={item} key={item.name} style={styles.itemContainer} />
             {editFollowedListEnabled && <TouchableOpacity style={{ paddingRight: 16, paddingLeft: 12 }} hitSlop={24} onPress={() => {
-              removeData(item)
+              // removeData(item)
             }}>
               <FontAwesome5 size={16} color={colors.red} name={'minus-circle'} />
             </TouchableOpacity>
@@ -142,7 +133,7 @@ export default ({ navigation }: { navigation: any }) => {
   return (
     <>
       <DraggableFlatList
-        data={followedData}
+        data={[]}
         onDragEnd={({ data }) => {
           setAllData(data.map(d => d.name))
         }}
