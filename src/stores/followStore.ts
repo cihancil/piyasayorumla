@@ -81,9 +81,11 @@ export const useFollowStore = create<FollowStore>()(
         })
       },
       fetchData: async () => {
+        const followedDataKeys = get().followedDataKeys
+        if (followedDataKeys.length == 0) return
         firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)
         const response = await firebase.app().functions(FUNCTION_REGION).httpsCallable('liveDataCall')({
-          keys: get().followedDataKeys,
+          keys: followedDataKeys,
         })
         const data = response.data
         const allForexData = data.map((d: any) => {

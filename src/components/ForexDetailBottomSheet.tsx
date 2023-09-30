@@ -7,7 +7,9 @@ import { useHistoryStore } from '@src/stores/historyStore'
 import AppText from './AppText'
 import ForexGraph from '@src/components/ForexGraph'
 import colors from '@src/utils/colors'
-
+// import dayjs from 'dayjs'
+// require('dayjs/locale/tr')
+// dayjs.locale('tr')
 interface ForexDetailBottomSheetProps {
 }
 
@@ -32,6 +34,10 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
   }, [bottomSheetForexData])
 
   const bottomSheetRef = useRef<BottomSheet>(null)
+
+  // const log = (name: string, date: Date) => {
+  //   console.log(name, dayjs(date).format('HH:mm'))
+  // }
 
   const dailyPoints = useMemo(() => {
     const dailyPointsToReturn: any[] = []
@@ -65,8 +71,18 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
         })
       }
     })
+    if (dailyPointsToReturn.length > 400) {
+      return dailyPointsToReturn.filter((dp, index) => {
+        return index % 2 == 0
+      })
+    }
     return dailyPointsToReturn
   }, [dailyHistoryData])
+
+  // console.log('XxXXxxXXXXXxXXxxXXXXXxXXxxXXXXXxXXxxXXXXXxXXxxXXXXXxXXxxXXXXXxXXxxXXXXXxXXxxXXXX')
+  // dailyPoints.forEach(dp => {
+  //   log('test', dp.date)
+  // })
 
   const monthlyPoints = useMemo(() => {
     const monthlyPointsToReturn: any[] = []
@@ -98,7 +114,21 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
         })
       }
     })
-    return monthlyPointsToReturn
+
+    const duplicatedMonthlyPointsToReturn = []
+    for (var i = 0; i < monthlyPointsToReturn.length; ++i) {
+      duplicatedMonthlyPointsToReturn.push(monthlyPointsToReturn[i])
+      // duplicatedMonthlyPointsToReturn.push(monthlyPointsToReturn[i])
+      // duplicatedMonthlyPointsToReturn.push(monthlyPointsToReturn[i])
+      // duplicatedMonthlyPointsToReturn.push(monthlyPointsToReturn[i])
+      // duplicatedMonthlyPointsToReturn.push(monthlyPointsToReturn[i])
+      // duplicatedMonthlyPointsToReturn.push(monthlyPointsToReturn[i])
+
+      // duplicatedMonthlyPointsToReturn.push(monthlyPointsToReturn[i])
+      // duplicatedMonthlyPointsToReturn.push(monthlyPointsToReturn[i])
+    }
+
+    return duplicatedMonthlyPointsToReturn
   }, [monthlyHistoryData])
 
 

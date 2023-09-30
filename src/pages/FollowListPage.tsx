@@ -56,11 +56,6 @@ export default ({ navigation }: { navigation: any }) => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (firebaseUser)
-  //     setInitialData([...currencies, ...golds, ...exchanges])
-  // }, [firebaseUser, currencies, golds, exchanges])
-
   useEffect(() => {
     navigation.setOptions({
       headerRight: editFollowedListEnabled ? () => null : () => (
@@ -82,18 +77,6 @@ export default ({ navigation }: { navigation: any }) => {
     setRefreshing(false)
   }, [])
 
-  // const followedData = useMemo(() => {
-  //   const followedData: ForexData[] = []
-  //   const allData = [...currencies, ...golds, ...exchanges]
-  //   followedDataNames.forEach(fdName => {
-  //     const found = allData.find(d => d.name == fdName)
-  //     if (found) {
-  //       followedData.push(found)
-  //     }
-  //   })
-  //   return followedData
-  // }, [followedDataNames, currencies, golds, exchanges])
-
   const renderItem = ({ item, drag, isActive }: RenderItemParams<ForexData>) => {
     return (
       <ScaleDecorator>
@@ -104,7 +87,6 @@ export default ({ navigation }: { navigation: any }) => {
             drag()
           } : undefined}
           onPress={editFollowedListEnabled ? undefined : () => {
-            console.log('setBottomSheetForexData', item)
             setBottomSheetForexData(item)
           }}
           style={{}}
@@ -129,7 +111,7 @@ export default ({ navigation }: { navigation: any }) => {
       </ScaleDecorator>
     )
   }
-  // return null
+
   return (
     <>
       <DraggableFlatList
