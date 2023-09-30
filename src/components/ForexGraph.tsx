@@ -20,7 +20,7 @@ interface ForexGraphProps {
 }
 
 const ForexGraph = (props: ForexGraphProps) => {
-  const { dailyPoints, monthlyPoints, yearlyPoints } = props
+  const { forexData, dailyPoints, monthlyPoints, yearlyPoints } = props
   const [index, setIndex] = useState<number>(0)
   let points: GraphPoint[] = []
   switch (index) {
@@ -50,19 +50,46 @@ const ForexGraph = (props: ForexGraphProps) => {
     return (
       <View style={{
         paddingHorizontal: 16, paddingVertical: 8,
+        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start',
       }}>
-        <AppText style={{ color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
-          {props.forexData.fullName || props.forexData.name}
-        </AppText>
-        <AppText style={{ color: colors.white, fontWeight: 'bold', fontSize: 24 }}>
-          {point.value}
-        </AppText>
-        <AppText style={{ color: colors.white, fontSize: 12, }}>
-          {dayjs(point.date).format(index == 0 ? 'D MMMM YYYY HH:mm' : 'D MMMM YYYY')}
-        </AppText>
+        <View>
+          <AppText style={{ color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
+            {forexData.fullName || forexData.name}
+          </AppText>
+          <AppText style={{ color: colors.white, fontWeight: 'bold', fontSize: 24 }}>
+            {point.value}
+          </AppText>
+          <AppText style={{ color: colors.white, fontSize: 12, }}>
+            {dayjs(point.date).format(index == 0 ? 'D MMMM YYYY HH:mm' : 'D MMMM YYYY')}
+          </AppText>
+        </View>
+        <View style={{ alignItems: 'flex-end', flexDirection: 'row' }}>
+          <View style={{ alignItems: 'flex-end', marginRight: 8, }}>
+            <AppText style={{ color: forexData.changeRate > 0 ? colors.green : colors.red, fontSize: 16, lineHeight: 21 }}>
+              {forexData.changeRateStr}
+            </AppText>
+            <AppText style={{ color: forexData.monthlyChangeRate > 0 ? colors.green : colors.red, fontSize: 16, lineHeight: 21 }}>
+              {forexData.monthlyChangeRateStr}
+            </AppText>
+            <AppText style={{ color: forexData.yearlyChangeRate > 0 ? colors.green : colors.red, fontSize: 16, lineHeight: 21 }}>
+              {forexData.yearlyChangeRateStr}
+            </AppText>
+          </View>
+          <View style={{ alignItems: 'flex-end', }}>
+            <AppText style={{ color: colors.mediumGray, fontSize: 16, lineHeight: 21 }}>
+              1g
+            </AppText>
+            <AppText style={{ color: colors.mediumGray, fontSize: 16, lineHeight: 21 }}>
+              1a
+            </AppText>
+            <AppText style={{ color: colors.mediumGray, fontSize: 16, lineHeight: 21 }}>
+              1y
+            </AppText>
+          </View>
+        </View>
       </View >
     )
-  }, [point, props.forexData])
+  }, [point, forexData])
 
   const renderButtons = useCallback(() => {
     return (
