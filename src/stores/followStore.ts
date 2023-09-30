@@ -31,7 +31,6 @@ const computeState = (state: FollowStore): ComputedStore => {
       return state.followedDataKV[k] != undefined
     })
     .map(k => {
-      console.log('computeState', k, state.followedDataKV)
       return state.followedDataKV[k]
     })
   return { followedDataItems: followedDataItems }
@@ -82,7 +81,6 @@ export const useFollowStore = create<FollowStore>()(
         })
       },
       fetchData: async () => {
-        console.log('-----fetchData', get().followedDataKeys)
         firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)
         const response = await firebase.app().functions(FUNCTION_REGION).httpsCallable('liveDataCall')({
           keys: get().followedDataKeys,
@@ -117,7 +115,6 @@ export const useFollowStore = create<FollowStore>()(
         allForexData.forEach((fd: ForexData) => {
           followedDataKV[fd.key] = fd
         })
-        console.log('-----fetchData DONE',)
         set({ followedDataKV: followedDataKV })
       },
     }), computeState)

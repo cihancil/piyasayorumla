@@ -55,7 +55,6 @@ export default ({ navigation }: { navigation: any }) => {
       unsubscribeBlur()
     }
   }, [])
-  console.log(followedDataItems)
 
   // useEffect(() => {
   //   if (firebaseUser)

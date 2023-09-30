@@ -45,7 +45,6 @@ export const useHistoryStore = create<HistoryStore>()(
           // } else {
           //   param = forexData.name
           // }
-          console.log('fetch', param)
 
           if (!param) return {}
           firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)

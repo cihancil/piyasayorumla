@@ -32,16 +32,76 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
   }, [bottomSheetForexData])
 
   const bottomSheetRef = useRef<BottomSheet>(null)
+
   const dailyPoints = useMemo(() => {
-    return dailyHistoryData.map(d => {
-      return { value: d.close, date: new Date(d.update_date * 1000) }
+    const dailyPointsToReturn: any[] = []
+    dailyHistoryData.forEach((d: any, ind: number) => {
+      if (dailyPointsToReturn.length == 0) {
+        const dt = new Date(d.update_date * 1000)
+        dt.setSeconds(0)
+        dailyPointsToReturn.push({
+          value: d.close, date: dt
+        })
+      } else {
+        const last = dailyPointsToReturn[dailyPointsToReturn.length - 1]
+        const lastDate = last.date
+        const elementDate = new Date(d.update_date * 1000)
+        elementDate.setSeconds(0)
+        const differenceInTime = elementDate.getTime() - lastDate.getTime()
+        const differenceInMinutes = differenceInTime / (1000 * 60)
+        if (differenceInMinutes > 1) {
+          const times = differenceInMinutes - 1
+          for (let i = 0; i < times; i++) {
+            let generatedDate = new Date(last.date)
+            generatedDate.setMinutes(generatedDate.getMinutes() + i + 1)
+            dailyPointsToReturn.push({
+              value: last.value,
+              date: generatedDate,
+            })
+          }
+        }
+        dailyPointsToReturn.push({
+          value: d.close, date: elementDate,
+        })
+      }
     })
+    return dailyPointsToReturn
   }, [dailyHistoryData])
+
   const monthlyPoints = useMemo(() => {
-    return monthlyHistoryData.map(d => {
-      return { value: d.close, date: new Date(d.update_date * 1000) }
+    const monthlyPointsToReturn: any[] = []
+    monthlyHistoryData.forEach((d: any, ind: number) => {
+      if (monthlyPointsToReturn.length == 0) {
+        const dt = new Date(d.update_date * 1000)
+        monthlyPointsToReturn.push({
+          value: d.close, date: dt
+        })
+      } else {
+        const last = monthlyPointsToReturn[monthlyPointsToReturn.length - 1]
+        const lastDate = last.date
+        const elementDate = new Date(d.update_date * 1000)
+        const differenceInTime = elementDate.getTime() - lastDate.getTime()
+        const differenceInDays = differenceInTime / (1000 * 3600 * 24)
+        if (differenceInDays > 1) {
+          const times = differenceInDays - 1
+          for (let i = 0; i < times; i++) {
+            let generatedDate = new Date(last.date)
+            generatedDate.setDate(generatedDate.getDate() + i + 1)
+            monthlyPointsToReturn.push({
+              value: last.value,
+              date: generatedDate,
+            })
+          }
+        }
+        monthlyPointsToReturn.push({
+          value: d.close, date: elementDate,
+        })
+      }
     })
+    return monthlyPointsToReturn
   }, [monthlyHistoryData])
+
+
   const yearlyPoints = useMemo(() => {
     const yearlyPointsToReturn: any[] = []
     yearlyHistoryData.forEach((d: any, ind: number) => {
@@ -58,7 +118,7 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
         if (differenceInDays > 1) {
           const times = differenceInDays - 1
           for (let i = 0; i < times; i++) {
-            let generatedDate = last.date
+            let generatedDate = new Date(last.date)
             generatedDate.setDate(generatedDate.getDate() + i + 1)
             yearlyPointsToReturn.push({
               value: last.value,
@@ -72,7 +132,7 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
       }
     })
     return yearlyPointsToReturn
-  }, [monthlyHistoryData])
+  }, [yearlyHistoryData])
 
   if (!bottomSheetForexData) return null
   return (
