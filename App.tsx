@@ -108,9 +108,7 @@ function App(): JSX.Element {
             <Tab.Screen name="Menu" component={MenuPage} />
           </Tab.Navigator>
         </NavigationContainer>
-        <ForexDetailBottomSheet onClose={() => {
-          // setBottom(false)
-        }} />
+        <ForexDetailBottomSheet />
       </SafeAreaView>
     </GestureHandlerRootView>
   )

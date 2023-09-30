@@ -1,14 +1,14 @@
 import { create } from 'zustand'
 import computed from "zustand-computed"
-import firestore from '@react-native-firebase/firestore'
 import storage from '@react-native-firebase/storage'
+import { firebase } from '@react-native-firebase/functions'
 
-// import ForexData, { DataType } from '@src/models/ForexData'
 import MetaData, { DataType } from '@src/models/MetaData'
 import { TRtoEN } from '@src/utils/helpers'
 
+const FUNCTION_REGION = 'europe-west1'
+
 type DataStore = {
-  // fetchData: () => Promise<void>,
   fetchMeta: () => Promise<void>,
   setSearchLabel: (search: string) => void,
   searchLabel: string,
@@ -40,7 +40,6 @@ export const useDataStore = create<DataStore>()(
       metadata: [],
       searchLabel: '',
       fetchMeta: async () => {
-        console.log('-----fetchMeta')
         const reference = storage().ref('meta.json')
         const downloadUrl = await reference.getDownloadURL()
         const metaResponse = await fetch(downloadUrl)
@@ -74,33 +73,6 @@ export const useDataStore = create<DataStore>()(
           })
         set({ metadata: metadata })
       },
-      // fetchData: async () => {
-      //   const dovizapiSnapshot = await firestore().collection('dovizapi').get()
-      //   let currencies: ForexData[] = [], golds: ForexData[] = [], exchanges: ForexData[] = []
-      //   dovizapiSnapshot.forEach(doc => {
-      //     const docId = doc.id
-      //     const docData = doc.data()
-      //     if (docId == 'kur') {
-      //       currencies = Object.values(docData)
-      //       currencies.forEach(c => {
-      //         c.type = DataType.kur
-      //       })
-      //     }
-      //     if (docId == 'gold') {
-      //       golds = Object.values(docData)
-      //       golds.forEach(g => {
-      //         g.type = DataType.gold
-      //       })
-      //     }
-      //     if (docId == 'borsa') {
-      //       exchanges = Object.values(docData)
-      //       exchanges.forEach(e => {
-      //         e.type = DataType.borsa
-      //       })
-      //     }
-      //   })
-      //   set({ currencies: currencies, golds: golds, exchanges: exchanges })
-      // },
       setSearchLabel: (search: string) => {
         set({ searchLabel: search })
       },

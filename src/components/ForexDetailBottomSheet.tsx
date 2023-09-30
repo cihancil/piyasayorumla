@@ -9,7 +9,6 @@ import ForexGraph from '@src/components/ForexGraph'
 import colors from '@src/utils/colors'
 
 interface ForexDetailBottomSheetProps {
-  onClose: () => void
 }
 
 const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
@@ -24,7 +23,7 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
   useEffect(() => {
     try {
       if (bottomSheetForexData) {
-        console.log('==fetch', bottomSheetForexData)
+        console.log('==fetchHistory with', bottomSheetForexData)
         fetchHistory(bottomSheetForexData!)
       }
     } catch (error) {
@@ -79,7 +78,7 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      snapPoints={[400]}
+      snapPoints={[440]}
       enablePanDownToClose
       onClose={() => {
         setBottomSheetForexData(null)

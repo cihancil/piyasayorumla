@@ -66,7 +66,7 @@ const ForexGraph = (props: ForexGraphProps) => {
 
   const renderButtons = useCallback(() => {
     return (
-      <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20, marginTop: 20 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 10, marginTop: 20 }}>
         <TouchableOpacity hitSlop={16} style={{ marginHorizontal: 32 }} onPress={() => setIndex(0)}>
           <AppText style={{
             color: (index == 0) ? colors.blue : colors.darkGray,
@@ -107,8 +107,10 @@ const ForexGraph = (props: ForexGraphProps) => {
         panGestureDelay={0}
         gradientFillColors={GRADIENT_FILL_COLORS}
         verticalPadding={36}
+
         style={{
           flex: 1,
+          paddingBottom: 16,
         }}
         onPointSelected={(p) => updatePriceTitle(p)}
         onGestureEnd={() => {

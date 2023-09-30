@@ -12,9 +12,7 @@ interface ForexDataListItemProps extends ViewProps {
 
 const ForexDataListItem = (props: ForexDataListItemProps) => {
   const { data, style } = props
-  const value = data.son || data.satis
-  const hasFullName = !!data.fullName
-  const upperLabel = data.name
+  const { latestValueStr, name, fullName, changeRateStr } = data
   return (
     <View style={StyleSheet.flatten([styles.container, style])}>
       <View style={{ flexDirection: 'column', flex: 1 }}>
@@ -22,15 +20,15 @@ const ForexDataListItem = (props: ForexDataListItemProps) => {
           color: Colors.white,
           fontSize: 20,
         }}>
-          {upperLabel}
+          {fullName}
         </AppText>
-        {hasFullName && <AppText style={{
+        <AppText style={{
           color: Colors.mediumGray,
           fontSize: 16,
 
         }}>
-          {data.fullName}
-        </AppText>}
+          {name}
+        </AppText>
       </View>
       <View style={{ flexDirection: 'column' }}>
         <AppText style={{
@@ -38,14 +36,14 @@ const ForexDataListItem = (props: ForexDataListItemProps) => {
           fontSize: 20,
           textAlign: 'right',
         }}>
-          {value}
+          {latestValueStr}
         </AppText>
         <AppText style={{
           textAlign: 'right',
-          color: data.degisim?.startsWith('%-') ? 'red' : 'green',
+          color: changeRateStr?.startsWith('%-') ? 'red' : 'green',
           fontSize: 16,
         }}>
-          {data.degisim}
+          {changeRateStr}
         </AppText>
       </View>
     </View>

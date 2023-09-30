@@ -24,15 +24,13 @@ const AndroidRefreshControl = createNativeWrapper(RefreshControl, {
 })
 
 export default ({ navigation }: { navigation: any }) => {
-  // const currencies = useDataStore((state) => state.currencies)
-  // const golds = useDataStore((state) => state.golds)
-  // const exchanges = useDataStore((state) => state.exchanges)
-  // const fetchData = useDataStore((state) => state.fetchData)
+  const fetchData = useFollowStore((state) => state.fetchData)
+  const followedDataItems = useFollowStore((state) => state.followedDataItems)
 
-  const followedDataNames = useFollowStore((state) => state.followedDataNames)
+  // const followedDataNames = useFollowStore((state) => state.followedDataNames)
   const removeDataKey = useFollowStore((state) => state.removeDataKey)
-  const setAllData = useFollowStore((state) => state.setAllData)
-  const setInitialData = useFollowStore((state) => state.setInitialData)
+  const setAllDataKeys = useFollowStore((state) => state.setAllDataKeys)
+  // const setInitialData = useFollowStore((state) => state.setInitialData)
 
   const editFollowedListEnabled = useUIStore((state) => state.editFollowedListEnabled)
   const setEditingFollowedList = useUIStore((state) => state.setEditingFollowedList)
@@ -40,9 +38,8 @@ export default ({ navigation }: { navigation: any }) => {
 
   const [refreshing, setRefreshing] = useState(false)
 
-
-
   useEffect(() => {
+    // setAllDataKeys([])
     let refreshIntervalId: any
     const unsubscribeFocus = navigation.addListener('focus', async () => {
       await onRefresh()
@@ -58,6 +55,7 @@ export default ({ navigation }: { navigation: any }) => {
       unsubscribeBlur()
     }
   }, [])
+  console.log(followedDataItems)
 
   // useEffect(() => {
   //   if (firebaseUser)
@@ -80,7 +78,7 @@ export default ({ navigation }: { navigation: any }) => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
-    // await fetchData()
+    await fetchData()
     await new Promise(resolve => setTimeout(resolve, 300))
     setRefreshing(false)
   }, [])
@@ -119,25 +117,28 @@ export default ({ navigation }: { navigation: any }) => {
             {editFollowedListEnabled && <View style={{ width: 8 }} />}
             <ForexDataListItem
               data={item} key={item.name} style={styles.itemContainer} />
-            {editFollowedListEnabled && <TouchableOpacity style={{ paddingRight: 16, paddingLeft: 12 }} hitSlop={24} onPress={() => {
-              // removeData(item)
-            }}>
-              <FontAwesome5 size={16} color={colors.red} name={'minus-circle'} />
-            </TouchableOpacity>
+            {editFollowedListEnabled &&
+              <TouchableOpacity
+                style={{ paddingRight: 16, paddingLeft: 12 }} hitSlop={24}
+                onPress={() => { removeDataKey(item.key) }}
+              >
+                <FontAwesome5 size={16} color={colors.red} name={'minus-circle'} />
+              </TouchableOpacity>
             }
           </View>
         </TouchableOpacity>
       </ScaleDecorator>
     )
   }
+  // return null
   return (
     <>
       <DraggableFlatList
-        data={[]}
+        data={followedDataItems}
         onDragEnd={({ data }) => {
-          setAllData(data.map(d => d.name))
+          // setAllData(data.map(d => d.name))
         }}
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item.key}
         renderItem={renderItem}
         containerStyle={styles.container}
         contentContainerStyle={{
@@ -173,9 +174,6 @@ export default ({ navigation }: { navigation: any }) => {
       >
         <FontAwesome5 size={16} color={colors.white} name={editFollowedListEnabled ? 'check' : 'edit'} />
       </TouchableOpacity>
-      {/* <ForexDetailBottomSheet open={bottom} onClose={() => {
-        setBottom(false)
-      }} /> */}
     </>
   )
 }

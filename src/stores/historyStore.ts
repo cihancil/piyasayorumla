@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import computed from "zustand-computed"
 import { firebase } from '@react-native-firebase/functions'
 
-import ForexData, { DataType } from '@src/models/ForexData'
+import ForexData from '@src/models/ForexData'
 
 const FUNCTION_REGION = 'europe-west1'
 
@@ -37,21 +37,20 @@ export const useHistoryStore = create<HistoryStore>()(
             monthlyHistoryData: [],
             yearlyHistoryData: [],
           })
-          let param
-          if (forexData.type == DataType.gold) {
-            param = forexData.endpoint
-          } else if (forexData.name == 'BIST 100') {
-            param = 'XU100'
-          } else {
-            param = forexData.name
-          }
+          let param = forexData.key
+          // if (forexData.type == DataType.gold) {
+          //   param = forexData.endpoint
+          // } else if (forexData.name == 'BIST 100') {
+          //   param = 'XU100'
+          // } else {
+          //   param = forexData.name
+          // }
           console.log('fetch', param)
 
           if (!param) return {}
-          // firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)
+          firebase.app().functions(FUNCTION_REGION).useEmulator('localhost', 5001)
           const response = await firebase.app().functions(FUNCTION_REGION).httpsCallable('historyCall')({
             name: param,
-            type: forexData.type,
           })
           const { daily, monthly, yearly } = response.data
           set({
