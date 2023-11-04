@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react'
 import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
+import { useBackHandler } from '@react-native-community/hooks'
 
 import { useUIStore } from '@src/stores/uiStore'
 import { useHistoryStore } from '@src/stores/historyStore'
@@ -34,6 +35,17 @@ const ForexDetailBottomSheet = (props: ForexDetailBottomSheetProps) => {
   }, [bottomSheetForexData])
 
   const bottomSheetRef = useRef<BottomSheet>(null)
+
+  useBackHandler(() => {
+    if (bottomSheetForexData) {
+      bottomSheetRef?.current?.close()
+      setTimeout(() => {
+        setBottomSheetForexData(null)
+      }, 300)
+      return true
+    }
+    return false
+  })
 
   // const log = (name: string, date: Date) => {
   //   console.log(name, dayjs(date).format('HH:mm'))
